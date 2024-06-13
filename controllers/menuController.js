@@ -69,9 +69,8 @@ exports.createMenu = async (req, res) => {
       if (!menu) {
         return res.status(404).json({ error: 'Menu not found' });
       }
-  
-      await menu.destroy();
-      res.status(204).send();
+    await menu.destroy();
+      res.status(204).json({ error: 'Deleted successfully' });
     } catch (error) {
       console.error('Delete Menu Error:', error);
       res.status(400).json({ error: error.message });

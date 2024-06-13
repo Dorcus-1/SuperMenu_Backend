@@ -19,6 +19,10 @@ const Dish = sequelize.define('Dish', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  picture:{
+    type:DataTypes.STRING,
+    allowNull:true
+  },
   menuId: {
     type: DataTypes.INTEGER,
     allowNull: false,
