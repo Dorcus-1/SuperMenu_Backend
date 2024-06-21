@@ -2,6 +2,8 @@ const Dish = require('../models/dishes');
 const Menu = require('../models/menu');
 const fs = require('fs');
 const path = require('path');
+const { Op } = require('sequelize');
+
 exports.createDish = async (req, res) => {
   try {
     const { name, price, menuId, description } = req.body;
@@ -49,7 +51,7 @@ exports.createDish = async (req, res) => {
   // Get all dishes
   exports.getAllDishes = async (req, res) => {
     try {
-      const dishes = await Dish.findAll({include:Menu});
+      const dishes = await Dish.findAll();
       res.status(200).json({ dishes });
     } catch (error) {
       console.error('Error fetching dishes:', error);
@@ -73,7 +75,7 @@ exports.createDish = async (req, res) => {
 
   exports.deleteAllDishes = async (req, res) => {
     try {
-      console.log("here")
+
       await Dish.destroy({
         where: {}, // This empty condition matches all records
       });
@@ -84,3 +86,35 @@ exports.createDish = async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   };
+
+  exports.getDishByMenuId = async (req, res) => {
+    try {
+      const dishes = await Dish.findAll({
+        where: { menuId: req.params.id },
+      });
+      res.status(200).json({ dishes });
+    } catch (error) {
+      console.error('Error fetching dishes:', error);
+  }
+}
+exports.getDishWithChicken= async (req, res) => {
+  try {
+    const dishes = await Dish.findAll({
+      where: { name: { [Op.like]: '%Chicken%' } },
+    });
+    res.status(200).json({ dishes });
+  } catch (error) {
+    console.error('Error fetching dishes:', error);
+  }
+}
+exports.getDishWithCheese= async (req, res) => {
+  try {
+    const dishes = await Dish.findAll({
+      where: { name: { [Op.like]: '%Cheese%' } },
+    });
+    res.status(200).json({ dishes });
+  } catch (error) {
+    console.error('Error fetching dishes:', error);
+}
+
+}

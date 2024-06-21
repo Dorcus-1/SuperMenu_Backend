@@ -49,7 +49,7 @@ exports.loginUser = async (req, res, next) => {
         return res.status(404).send("Incorrect email or password");
       }
   
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ id: user.id ,fullnames:user.fullnames,email:user.email}, process.env.JWT_SECRET, {
         expiresIn: "3h"
       });
   
@@ -67,6 +67,17 @@ exports.loginUser = async (req, res, next) => {
       res.status(500).send("An error occurred while logging in the user");
     }
   };
+  exports.getProfile=async(req,res)=>{
+
+    try{
+     const user= await req.user
+     console.log(user)
+     return res.status(200).json(user)
+
+    }catch(err){
+      res.status(400).json({ error: err.message });
+    }
+  }
 
   exports.getUsers = async (req, res) => {
     try {
